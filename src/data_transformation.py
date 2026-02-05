@@ -73,6 +73,9 @@ def transform_reviews(raw_reviews, apps_df):
 
     df = pd.DataFrame(rows)
 
+    if "reviewId" in df.columns:
+        df = df.drop_duplicates(subset=["app_id", "reviewId"], keep="first")
+
     return df
 
 

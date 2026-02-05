@@ -19,6 +19,7 @@ def serialize_review(review):
         at = at.isoformat()
 
     return {
+        "reviewId": review.get("reviewId"),
         "userName": review.get("userName"),
         "userImage": review.get("userImage"),
         "rating": review.get("rating"),

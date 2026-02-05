@@ -1,31 +1,30 @@
 appId,title,developer,score,ratings,installs,genre,price
-com.aisense.otter,OtterAI Transcribe Voice Notes,Otter.ai,4.33,,5000000,Productivity,0
-com.codespaceapps.meetingtranscriber,Smart Noter - AI Note Taker,Deep Flow Apps,4.28,,5000000,Productivity,0
-notion.id,"Notion: Notes, Tasks, AI","Notion Labs, Inc.",4.68,,10000000,Productivity,0
-ai.turbolearn,Turbo AI - Notetaker,Turbo AI,4.71,,1000000,Education,0
-io.labhouse.audioapp,Summary - AI Note Taker,Labhouse Mobile,4.6,,100000,Productivity,0
+com.goodnotes.android.app,"Goodnotes: AI Notes, Docs, PDF",Goodnotes,3.72,,1000000,Productivity,0
 com.google.android.apps.labs.language.tailwind,Google NotebookLM,Google LLC,4.83,,10000000,Productivity,0
-com.microsoft.office.onenote,Microsoft OneNote: Save Notes,Microsoft Corporation,4.64,,500000000,Productivity,0
-ai.fireflies.mobile,Fireflies: AI notetaker,Fireflies.ai,4.72,,100000,Productivity,0
-com.yygg.note.app,"Notewise - AI Notes, PDF, Docs",Notewise,4.56,,5000000,Productivity,0
-com.goodnotes.android.app,"Goodnotes: AI Notes, Docs, PDF",Goodnotes,3.49,,1000000,Productivity,0
-com.hubx.noteai,Note AI: Smart Note Taker,HubX,4.32,,100000,Productivity,0
-com.studocu.app,Studocu: AI Notes & Summaries,Studocu,4.63,,1000000,Education,0
-easynotes.notes.notepad.notebook.privatenotes.note,Easy Notes - Note Taking Apps,"Gulooloo Tech Co., Ltd.",4.69,,10000000,Productivity,0
-com.google.android.keep,Google Keep - Notes and lists,Google LLC,4.71,,1000000000,Productivity,0
-evolly.app.ainote,AI Note Taker - Voice to Notes,EVOLLY HK,4.02,,100000,Productivity,0
-newway.good.note.ai.notepad.notebook.checklist.gpt,AI Notes & Transcribe Memo,Newway Apps,4.22,,1000000,Productivity,0
-com.sota.ainotex,"NoteX: AI Note Taker, Notebook",SotaLabs,4.41,,100000,Productivity,0
-com.fluidtouch.noteshelf3,Noteshelf 3: Digital Notes,Fluid Touch,4.14,,1000000,Productivity,0
-com.ma.waveapp,Wave AI Note Taker & Recorder,Mohrer Associates,4.57,,100000,Productivity,0
-com.appzone.noteai,"Notes AI: Note Taker, Notebook",AppZone AI,4.63,,5000,Productivity,0
+io.labhouse.audioapp,Summary - AI Note Taker,Labhouse Mobile,4.73,,500000,Productivity,0
+notion.id,"Notion: Notes, Tasks, AI","Notion Labs, Inc.",4.68,,10000000,Productivity,0
+ai.turbolearn,Turbo AI - Notetaker,Turbo AI,4.74,,1000000,Education,0
+com.aisense.otter,OtterAI Transcribe Voice Notes,Otter.ai,4.31,,5000000,Productivity,0
+com.codespaceapps.meetingtranscriber,Smart Noter - AI Note Taker,Deep Flow Apps,4.34,,5000000,Productivity,0
+com.yygg.note.app,"Notewise - AI Notes, PDF, Docs",Notewise,4.59,,5000000,Productivity,0
+ai.note.notepad.memo.journal.freenote,Freenotes - Notes Taking & PDF,Freenotes Inc,4.51,,500000,Productivity,0
+com.microsoft.office.onenote,Microsoft OneNote: Save Notes,Microsoft Corporation,4.63,,500000000,Productivity,0
+com.sota.ainotex,NoteX: AI Notes & Meetings,SotaLabs,4.34,,100000,Productivity,0
+com.studocu.app,Studocu: AI Notes & Summaries,Studocu,4.58,,1000000,Education,0
+ai.notes.notebook,HyNote: AI Notebook LLM Notes,Turing Intelligence,4.4,,100000,Productivity,0
+easynotes.notes.notepad.notebook.privatenotes.note,Easy Notes - Note Taking Apps,"Gulooloo Tech Co., Ltd.",4.68,,10000000,Productivity,0
+com.hubx.noteai,Note AI: Smart Note Taker,HubX,4.38,,100000,Productivity,0
+ai.fireflies.mobile,Fireflies: AI notetaker,Fireflies.ai,4.63,,100000,Productivity,0
+com.google.android.keep,Google Keep - Notes and lists,Google LLC,4.69,,1000000000,Productivity,0
+com.recordpro.audiorecord,HiNoter - AI Note Taker,Nieruo Team,4.58,,100000,Productivity,0
+app.coconote,Coconote - AI Note Taker,Quizlet Inc.,4.4,,100000,Education,0
 com.meetgeek.assistant,AI Transcribe. Speech to Text,MeetGeek: AI Note Taker. Transcribe Speech to Text,4.4,,100000,Productivity,0
-com.evernote,Evernote - Note Organizer,Evernote Corporation,3.53,,100000000,Productivity,0
-app.coconote,Coconote - AI Note Taker,Quizlet Inc.,4.46,,100000,Education,0
-ai.note.notepad.memo.journal.freenote,Freenotes - Notes Taking & PDF,Freenotes Inc,4.55,,100000,Productivity,0
-com.jideos.jnotes.overseas.google,"Jnotes: Note-Taking, AI, PDF",one of the handwritten notes,4.36,,1000000,Productivity,0
+evolly.app.ainote,AI Note Taker - Voice to Notes,EVOLLY HK,3.95,,100000,Productivity,0
+com.jideos.jnotes.overseas.google,"Jnotes: Note-Taking, AI, PDF",one of the handwritten notes,4.42,,1000000,Productivity,0
+com.joyolabs.noteify,CraftNote – AI Note Taker,JoyoLabs Dijital,4.58,,100000,Productivity,0
+com.evernote,Evernote - Note Organizer,Evernote by Bending Spoons,3.57,,100000000,Productivity,0
+com.ma.waveapp,Wave AI Note Taker & Recorder,Mohrer Associates,4.55,,100000,Productivity,0
+com.twitter.videodownload.videodownloaderfortwitter,AI Voice to Text AI Note Taker,"AI Music AI Video Generator, AI Chat AI Girlfriend",4.44,,1000000,Productivity,0
+com.relanote.app.twa,Relanote - AI Note-taking,"Ubidesk, LLC",3.67,,10000,Productivity,0
+com.appzone.noteai,"Notes AI: Note Taker, Notebook",AppZone AI,4.55,,5000,Productivity,0
 com.feraset.ainote,AI Note Taker - Meeting Notes,FERASET,4.29,,10000,Education,0
-com.myscript.nebo,MyScript Notes (Nebo),MyScript,4.46,,1000000,Productivity,0
-com.zoho.notebook,Notebook - AI Notes & Notepad,Zoho Corporation,4.13,,5000000,Productivity,0
-com.joyolabs.noteify,CraftNote – AI Note Taker,JoyoLabs Dijital,4.63,,100000,Productivity,0
-com.artmvstd.voiceTranscriber,"AI Note Taking, Memo: NoteHive",Artmvstd,4.86,,1000,Productivity,0
