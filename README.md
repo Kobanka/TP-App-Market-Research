@@ -23,7 +23,7 @@ This pipeline performs the following stages:
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Kobanka/TP-App-Market-Research.git
-   cd "TP-Data-Engineering/App Market Research"
+   cd "TP-App-Market-Research"
    ```
 
 2. **Create a virtual environment**
