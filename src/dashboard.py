@@ -12,9 +12,6 @@ def main():
     app = pd.read_csv(APP_KPIS)
     daily = pd.read_csv(DAILY)
 
-    print(daily.columns)
-    print(daily[["date", "daily_number_of_reviews"]].head(10))
-
 
     # Basic cleaning/typing for plotting
     if "avg_rating" in app.columns:
