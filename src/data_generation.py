@@ -1,6 +1,6 @@
 from google_play_scraper import Sort, reviews, search
 import json
-import os
+from pathlib import Path
 
 
 def search_apps(query, num_results=100):
@@ -71,11 +71,12 @@ if __name__ == "__main__":
     query = "ai note taking applications"
 
     # Create output directory
-    raw_dir = os.path.join("App Market Research", "data", "raw")
-    os.makedirs(raw_dir, exist_ok=True)
+    base_dir = Path(__file__).resolve().parent.parent
+    raw_dir = base_dir / "data" / "raw"
+    raw_dir.mkdir(parents=True, exist_ok=True)
     
-    apps_meta_path = os.path.join(raw_dir, "apps_metadata.json")
-    apps_reviews_path = os.path.join(raw_dir, "apps_reviews.json")
+    apps_meta_path = raw_dir / "apps_metadata.json"
+    apps_reviews_path = raw_dir / "apps_reviews.json"
 
     # Initialize files (overwrite if exists)
     with open(apps_meta_path, "w", encoding="utf-8") as f:
