@@ -22,7 +22,9 @@ PROCESSED_DIR = BASE_DIR / "data" / "processed"
 REVIEWS_SCHEMA_MAP = {
     # canonical
     "app_id": "app_id",
+    "appId": "app_id",
     "app_name": "app_name",
+    "appTitle": "app_name",
     "reviewId": "reviewId",
     "review_id": "reviewId",
     "id": "reviewId",
@@ -47,6 +49,7 @@ REVIEWS_SCHEMA_MAP = {
     "timestamp": "at",
     "review_date": "at",
     "created_at": "at",
+    "review_time": "at",
 }
 
 APPS_SCHEMA_MAP = {
@@ -91,6 +94,30 @@ def normalize_columns(df: pd.DataFrame, schema_map: dict) -> pd.DataFrame:
     return df
 
 
+def _read_csv_tolerant(path: Path, label: str) -> pd.DataFrame:
+    """Read CSV with a fallback parser; log estimated skipped rows if needed."""
+    try:
+        return pd.read_csv(path, dtype=str)
+    except pd.errors.ParserError:
+        total_lines = 0
+        try:
+            with open(path, encoding="utf-8", errors="ignore") as f:
+                for _ in f:
+                    total_lines += 1
+        except OSError:
+            total_lines = 0
+
+        df = pd.read_csv(path, dtype=str, engine="python", on_bad_lines="skip")
+
+        if total_lines > 1:
+            estimated_skipped = max(0, (total_lines - 1) - len(df))
+            if estimated_skipped > 0:
+                print(
+                    f"  ⚠️  {label} CSV had malformed rows; skipped ~{estimated_skipped} lines"
+                )
+        return df
+
+
 # ──────────────────────────────────────────────
 # Loaders
 # ──────────────────────────────────────────────
@@ -116,7 +143,7 @@ def load_raw_apps(path: Path = None) -> pd.DataFrame:
             data = json.load(f)
         df = pd.DataFrame(data)
     else:
-        df = pd.read_csv(path, dtype=str)
+        df = _read_csv_tolerant(path, "apps metadata")
 
     df = normalize_columns(df, APPS_SCHEMA_MAP)
     return df
@@ -149,7 +176,7 @@ def load_raw_reviews(path: Path = None) -> pd.DataFrame:
                 rows.append(r)
         df = pd.DataFrame(rows)
     else:
-        df = pd.read_csv(path, dtype=str)
+        df = _read_csv_tolerant(path, "reviews")
 
     df = normalize_columns(df, REVIEWS_SCHEMA_MAP)
     return df

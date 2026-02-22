@@ -1,0 +1,4 @@
+app_id,app_name,n_reviews,avg_rating,first_review_date,most_recent_review_date,pct_low_rating_reviews
+com.otter.ai,Otter AI,5,3.2,2025-02-05,2025-02-05,40.0
+com.notewise.ai,Notewise,3,2.667,2025-02-05,2025-02-05,66.67
+com.newnote.ai,NewNote,2,2.0,2025-02-05,2025-02-05,50.0
