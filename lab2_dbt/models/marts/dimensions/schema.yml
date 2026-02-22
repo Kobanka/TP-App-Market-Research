@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: dim_developers
+    description: "Developer dimension. One row per unique developer name."
+    columns:
+      - name: developer_sk
+        description: "MD5 surrogate key"
+        tests:
+          - not_null
+          - unique
+      - name: developer_name
+        description: "Developer display name"
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_categories
+    description: "Category/genre dimension. One row per unique genre."
+    columns:
+      - name: category_sk
+        description: "MD5 surrogate key"
+        tests:
+          - not_null
+          - unique
+      - name: category_name
+        description: "Genre label from the Play Store"
+        tests:
+          - not_null
+          - unique
+
+  - name: dim_apps
+    description: "App dimension (SCD Type 1 — current state only). Hierarchy: dim_apps > dim_categories."
+    columns:
+      - name: app_sk
+        description: "Surrogate key (from stg_playstore_apps)"
+        tests:
+          - not_null
+          - unique
+      - name: app_id
+        description: "Natural key — Play Store package name"
+        tests:
+          - not_null
+          - unique
+      - name: app_name
+        description: "Application display name"
+        tests:
+          - not_null
+      - name: developer_sk
+        description: "FK → dim_developers.developer_sk"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_developers')
+              field: developer_sk
+      - name: category_sk
+        description: "FK → dim_categories.category_sk — referential integrity for app→category hierarchy"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_categories')
+              field: category_sk
+
+  - name: dim_date
+    description: "Conformed date dimension. One row per calendar day. PK = date_key (YYYYMMDD integer)."
+    columns:
+      - name: date_key
+        description: "Integer date key in YYYYMMDD format (Kimball convention)"
+        tests:
+          - not_null
+          - unique
+      - name: calendar_date
+        description: "Calendar date"
+        tests:
+          - not_null
+          - unique
+      - name: year
+        tests:
+          - not_null
+      - name: month
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      - name: day_of_week
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6]

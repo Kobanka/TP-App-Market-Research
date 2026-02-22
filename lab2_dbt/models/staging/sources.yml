@@ -1,0 +1,44 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw tables loaded from Google Play Store JSON files via ingest_to_duckdb.py"
+    tables:
+      - name: raw_apps
+        description: "Raw app metadata from apps_metadata.json"
+        columns:
+          - name: appId
+            description: "Unique Play Store application identifier"
+          - name: title
+            description: "Application display name"
+          - name: developer
+            description: "Developer or publisher name"
+          - name: score
+            description: "Aggregate rating score (0–5)"
+          - name: ratings
+            description: "Total number of ratings"
+          - name: installs
+            description: "Install count string e.g. '10,000+'"
+          - name: genre
+            description: "Primary genre / category"
+          - name: price
+            description: "App price (0.0 for free apps)"
+
+      - name: raw_reviews
+        description: "Flattened user reviews from apps_reviews.json"
+        columns:
+          - name: app_id
+            description: "Foreign key to raw_apps.appId"
+          - name: reviewId
+            description: "Unique review identifier"
+          - name: userName
+            description: "Display name of the reviewer"
+          - name: score
+            description: "Review rating 1–5"
+          - name: content
+            description: "Review text body"
+          - name: thumbsUpCount
+            description: "Number of helpful votes"
+          - name: at
+            description: "Review submission timestamp"

@@ -1,0 +1,9 @@
+playstore_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "data/db/playstore.duckdb"
+      threads: 4
+      extensions:
+        - json

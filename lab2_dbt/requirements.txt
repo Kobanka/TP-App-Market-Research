@@ -1,0 +1,12 @@
+# Lab 2 — dbt + DuckDB pipeline dependencies
+# Install with: pip install -r requirements.txt
+
+# From Lab 1 (retained for data ingestion)
+google-play-scraper>=1.2.4
+pandas>=1.5.0
+plotly>=5.15.0
+
+# Lab 2 additions
+duckdb>=0.10.0
+dbt-core>=1.7.0
+dbt-duckdb>=1.7.0

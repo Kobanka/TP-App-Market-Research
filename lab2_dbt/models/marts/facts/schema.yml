@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: fact_reviews
+    description: >
+      Central fact table at review grain. One row per unique user review event
+      for one app at a point in time. Foreign keys join to dim_apps, dim_developers,
+      dim_categories, and dim_date.
+    columns:
+      - name: review_sk
+        description: "Surrogate key of the review fact row"
+        tests:
+          - not_null
+          - unique
+
+      - name: review_id
+        description: "Degenerate dimension — natural review identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: app_fk
+        description: "FK → dim_apps.app_sk"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_apps')
+              field: app_sk
+
+      - name: developer_fk
+        description: "FK → dim_developers.developer_sk"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_developers')
+              field: developer_sk
+
+      - name: category_fk
+        description: "FK → dim_categories.category_sk"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_categories')
+              field: category_sk
+
+      - name: date_fk
+        description: "FK → dim_date.date_key (YYYYMMDD integer)"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+
+      - name: review_score
+        description: "User rating 1–5"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+
+      - name: thumbs_up_count
+        description: "Number of helpful votes on this review"
+        tests:
+          - not_null
+
+      - name: reviewed_at
+        description: "Full UTC timestamp of the review"
+        tests:
+          - not_null

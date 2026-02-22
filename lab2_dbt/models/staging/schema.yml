@@ -1,0 +1,84 @@
+version: 2
+
+models:
+  - name: stg_playstore_apps
+    description: "Cleaned and standardized app metadata. One row per unique app."
+    columns:
+      - name: app_sk
+        description: "MD5 surrogate key derived from app_id"
+        tests:
+          - not_null
+          - unique
+
+      - name: app_id
+        description: "Natural key from Google Play Store"
+        tests:
+          - not_null
+          - unique
+
+      - name: app_name
+        description: "Application display name"
+        tests:
+          - not_null
+
+      - name: developer_name
+        description: "Developer or publisher name"
+        tests:
+          - not_null
+
+      - name: avg_rating
+        description: "Aggregate rating score (0–5)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 5
+              inclusive: true
+
+      - name: review_score
+        description: "Review score (1-5)"
+
+      - name: category_name
+        description: "App genre/category"
+        tests:
+          - not_null
+
+  - name: stg_playstore_reviews
+    description: "Cleaned user reviews. One row per unique review."
+    columns:
+      - name: review_sk
+        description: "MD5 surrogate key derived from review_id"
+        tests:
+          - not_null
+          - unique
+
+      - name: review_id
+        description: "Natural key - unique review identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: app_id
+        description: "Foreign key to stg_playstore_apps.app_id"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_playstore_apps')
+              field: app_id
+
+      - name: review_score
+        description: "Review rating 1–5"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+
+      - name: reviewed_at
+        description: "Review submission timestamp (UTC)"
+        tests:
+          - not_null
+
+      - name: date_key
+        description: "Integer date key in YYYYMMDD format for joining dim_date"
+        tests:
+          - not_null
