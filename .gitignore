@@ -1,0 +1,15 @@
+# Python virtual env
+dataApps/
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# dbt target
+target/
+dbt_packages/
+
+# OS
+.DS_Store
