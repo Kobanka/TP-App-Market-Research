@@ -1,15 +1,25 @@
 # App Market Research - Data Engineering Pipeline
 
-A complete data engineering pipeline for collecting, transforming, and analyzing Google Play Store app data. This project scrapes app metadata and user reviews, processes them through ETL stages, and generates an interactive dashboard for market insights.
+A complete data engineering pipeline for collecting, transforming, and analyzing Google Play Store app data. This project includes two labs:
+
+- **Lab 1**: Python-based ETL pipeline with Pandas and Plotly
+- **Lab 2**: dbt + DuckDB dimensional modeling and analytics
 
 ## 📋 Project Overview
 
-This pipeline performs the following stages:
+### Lab 1: Python ETL Pipeline
 
 1. **Data Generation**: Scrape Google Play Store for app metadata and reviews
 2. **Data Transformation**: Clean and structure raw data into analytics-ready formats
 3. **Data Serving**: Calculate KPIs and metrics for visualization
 4. **Dashboard**: Generate interactive visualizations using Plotly
+
+### Lab 2: dbt + DuckDB Analytics
+
+1. **Staging Layer**: Normalized views with data quality tests
+2. **Dimensional Modeling**: Kimball-style star schema (dims + fact tables)
+3. **SCD Type 2**: Historical tracking of app attribute changes
+4. **Incremental Loading**: Efficient fact table updates
 
 ## 🚀 Quick Start
 
@@ -43,12 +53,20 @@ This pipeline performs the following stages:
    dataApps\Scripts\activate
    ```
 
-4. **Install dependencies**
+4. **Install Lab 1 dependencies**
    ```bash
    pip install google-play-scraper pandas plotly
    ```
 
-## 📊 Running the Pipeline
+5. **Install Lab 2 dependencies** (if running Lab 2)
+   ```bash
+   cd lab2_dbt
+   pip install -r requirements.txt
+   ```
+
+---
+
+## 📊 Lab 1: Python ETL Pipeline
 
 Run each stage in order from the project root directory:
 
@@ -76,35 +94,26 @@ python src/data_transformation.py
 - `data/processed/apps_metadata.csv` - Cleaned app catalog
 - `data/processed/apps_reviews.csv` - Structured review data
 
-### Step 3: Calculate Metrics
+### Running the Full Pipeline
 
-Aggregates data into KPIs and time-series metrics:
-
-```bash
-python src/serve.py
-```
-
-**Output**:
-- `data/processed/serving_app_kpis.csv` - Per-app metrics (avg rating, review count, etc.)
-- `data/processed/serving_daily_metrics.csv` - Daily trends
-
-### Step 4: Generate Dashboard
-
-Creates an interactive HTML dashboard:
+Execute all stages (Transform → Serve → Dashboard):
 
 ```bash
-python src/dashboard.py
+python src/run_pipeline.py
 ```
 
-**Output**:
-- `data/processed/dashboard.html` - Interactive visualization dashboard
+Add `--stress` flag to run chaos engineering stress tests:
 
-### Step 5: View the Dashboard
+```bash
+python src/run_pipeline.py --stress
+```
+
+### View the Dashboard
 
 Start a local web server to view the interactive dashboard:
 
 ```bash
-cd "data/processed"
+cd data/processed
 python -m http.server 8000
 ```
 
@@ -115,6 +124,76 @@ http://localhost:8000/dashboard.html
 
 Press `Ctrl+C` in the terminal to stop the server when done.
 
+---
+
+## 🗄️ Lab 2: dbt + DuckDB Analytics
+
+### Architecture
+
+**Section A — Configuration:**
+- `dbt_project.yml` — Project config with materialization conventions (staging=view, marts=table)
+- `profiles.yml` — DuckDB connection profile
+- `ingest_to_duckdb.py` — Python bridge loading Lab 1 JSON files into DuckDB's raw schema
+- `packages.yml` — dbt dependencies (dbt_utils)
+
+**Section B+C — Data Modeling:**
+- Kimball Bus Matrix with Star/Snowflake schema design
+- `dim_apps` → `dim_categories` hierarchy
+- `dim_developers`, `dim_date` (YYYYMMDD integer key)
+- `fact_reviews` with 4 FK joins and derived measures
+
+**Section D — Full dbt Pipeline:**
+- **Staging**: `stg_playstore_apps.sql`, `stg_playstore_reviews.sql` with data quality tests
+- **Dimensions**: `dim_developers`, `dim_categories`, `dim_apps`, `dim_date` with referential integrity tests
+- **Facts**: `fact_reviews.sql` with foreign key joins
+- `run_pipeline.sh` — One-command pipeline execution
+
+**Section E — Chaos Engineering:**
+- `fact_reviews_incremental.sql` — Incremental model with `unique_key=review_id`
+- `snapshots/snap_dim_apps.sql` — SCD Type 2 snapshot using CHECK strategy
+- `dim_apps_scd.sql` — Historized dimension with `is_current`, `dbt_valid_from/to`
+- `fact_reviews_historical.sql` — Temporal join to SCD2 dimension
+- `run_scd2.sh` — Helper script for snapshot + SCD2 workflow
+
+### Running Lab 2
+
+1. **Navigate to Lab 2 directory**
+   ```bash
+   cd lab2_dbt
+   ```
+
+2. **Copy raw data from Lab 1** (if not already present)
+   ```bash
+   cp -r ../data/raw ./data/
+   ```
+
+3. **Ingest data to DuckDB**
+   ```bash
+   python ingest_to_duckdb.py
+   ```
+
+4. **Run the full pipeline**
+   ```bash
+   bash run_pipeline.sh
+   ```
+   
+   For incremental fact table updates:
+   ```bash
+   bash run_pipeline.sh --incremental
+   ```
+
+5. **Run SCD Type 2 workflow**
+   ```bash
+   bash run_scd2.sh
+   ```
+
+6. **Query the DuckDB database**
+   ```bash
+   duckdb data/db/playstore.duckdb
+   ```
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -122,31 +201,88 @@ App Market Research/
 ├── README.md
 ├── requirements.txt
 ├── data/
-│   ├── raw/              # Scraped JSON data
-│   └── processed/        # Transformed CSV + dashboard
-├── dataApps/             # Virtual environment (after setup)
-└── src/
-    ├── data_generation.py      # Stage 1: Scrape data
-    ├── data_transformation.py  # Stage 2: Transform
-    ├── serve.py                # Stage 3: Calculate metrics
-    └── dashboard.py            # Stage 4: Visualize
+│   ├── raw/                  # Scraped JSON data (Lab 1 output)
+│   └── processed/            # Transformed CSV + dashboard (Lab 1)
+│       └── stress_test/      # Stress test outputs (Lab 1)
+├── reference-data-prof/      # Stress test input files (Lab 1)
+├── dataApps/                 # Virtual environment (after setup)
+├── src/                      # Lab 1 Python ETL scripts
+│   ├── data_generation.py
+│   ├── data_transformation.py
+│   ├── serve.py
+│   ├── dashboard.py
+│   ├── run_pipeline.py
+│   └── stress_test.py
+└── lab2_dbt/                 # Lab 2: dbt + DuckDB
+    ├── dbt_project.yml
+    ├── profiles.yml
+    ├── packages.yml
+    ├── requirements.txt
+    ├── ingest_to_duckdb.py
+    ├── run_pipeline.sh
+    ├── run_scd2.sh
+    ├── data/
+    │   ├── raw/              # Raw JSON (copied from Lab 1 or generated)
+    │   └── db/               # DuckDB database file
+    ├── models/
+    │   ├── staging/          # Normalized views with tests
+    │   ├── marts/
+    │   │   ├── dimensions/   # dim_* tables
+    │   │   └── facts/        # fact_* tables
+    │   └── sources.yml
+    ├── snapshots/            # SCD Type 2 snapshots
+    ├── macros/               # Custom dbt macros
+    └── tests/                # Custom data tests
 ```
 
-## 📈 Dashboard Features
+---
+
+## 📈 Lab 1 Dashboard Features
 
 The generated dashboard includes:
 
-1. **App Performance Scatter Plot**: Visualize rating vs review volume
-2. **Daily Rating Trends**: Track average ratings over time
-3. **Review Volume Analysis**: Weekly aggregation of review counts
+1. **App Performance Chart**: Top/bottom apps by average rating
+2. **Rating Trend Over Time**: 7-day rolling average
+3. **Review Volume vs Rating**: Bubble chart with low-rating percentage
+4. **Weekly Review Volume**: Bar chart with time slider
+
+---
+
+## 🧪 Lab 1 Stress Tests
+
+The pipeline includes 5 chaos engineering scenarios (Section C):
+
+- **C1**: New reviews batch with duplicates
+- **C2**: Schema drift (column name variations)
+- **C3**: Dirty data (invalid scores, malformed timestamps)
+- **C4**: Updated app metadata with duplicates
+- **C5**: Sentiment contradiction detection (business logic)
+
+Run with:
+```bash
+python src/run_pipeline.py --stress
+```
+
+---
 
 ## 🔧 Customization
 
-- **Change search query**: Edit the `query` variable in `data_generation.py` (line 43)
-- **Adjust review count**: Modify the `count` parameter in `fetch_app_reviews()` call (line 71)
-- **Filter thresholds**: Update minimum review count in `dashboard.py` (line 33)
+### Lab 1
+- **Change search query**: Edit the `query` variable in `data_generation.py`
+- **Adjust review count**: Modify the `max_reviews` parameter in `fetch_app_reviews()`
+- **Filter thresholds**: Update minimum review count in dashboard charts
+
+### Lab 2
+- **Modify dimensions**: Edit models in `models/marts/dimensions/`
+- **Add custom tests**: Create SQL files in `tests/`
+- **Adjust incremental logic**: Update `fact_reviews_incremental.sql`
+- **Change SCD strategy**: Modify `snapshots/snap_dim_apps.sql`
+
+---
 
 ## 🛠️ Troubleshooting
+
+### Lab 1
 
 **Import errors**: Make sure your virtual environment is activated and dependencies are installed:
 ```bash
@@ -157,12 +293,32 @@ pip install google-play-scraper pandas plotly
 
 **Empty data**: The scraper may return different results based on Google Play availability. Check that `data/raw/` contains JSON files with data.
 
+### Lab 2
+
+**dbt connection errors**: Verify `profiles.yml` is in the `lab2_dbt/` directory
+
+**Missing dbt_utils**: Run `dbt deps --profiles-dir .` to install packages
+
+**DuckDB file locked**: Close any open DuckDB connections before running the pipeline
+
+**Snapshot errors**: Ensure staging models run successfully before creating snapshots
+
+---
+
 ## 📝 Notes
 
+### Lab 1
 - The scraper uses the `google-play-scraper` library (unofficial API)
 - Review data availability depends on Google Play Store's current state
-- For production use, consider implementing continuation tokens for larger datasets
-- Add error handling around API calls to prevent data loss during collection
+- Stress tests validate pipeline robustness against schema drift and dirty data
+
+### Lab 2
+- DuckDB database file: `lab2_dbt/data/db/playstore.duckdb`
+- Snapshots track changes over time using dbt's SCD Type 2 implementation
+- Incremental models optimize performance for large fact tables
+- All models include comprehensive data quality tests
+
+---
 
 ## 📄 License
 
